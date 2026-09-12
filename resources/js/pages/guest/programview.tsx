@@ -1,12 +1,12 @@
-import { FacultyStaff } from '@/types/content';
-import PageHeader from '@/components/guest/page-header';
 import ImageRow from '@/components/guest/imagerow';
+import PageHeader from '@/components/guest/page-header';
 import { AreaCard } from '@/components/ui/area-card';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useSmartPoll } from '@/hooks/use-smart-poll';
 import Layout from '@/layouts/guest/landing-layout';
 import { Auth, PerProgramUnderSurvey } from '@/types';
+import { FacultyStaff } from '@/types/content';
 import { Head, router, usePage, useRemember } from '@inertiajs/react';
 import {
     AlertCircle,
@@ -276,14 +276,14 @@ export default function Programs({ program }: PerProgramProps) {
                     </div>
 
                     <div className="relative z-10 mx-auto flex w-[80%] max-w-5xl flex-col items-center justify-between gap-10 px-8 py-16 md:flex-row">
-                        <div className="animate-fade-in-up flex flex-col items-center text-white md:items-start">
+                        <div className="animate-fade-in-up flex flex-col items-start text-white">
                             <div className="mb-4">
                                 <span className="inline-block items-center gap-1.5 rounded-md bg-white/80 px-3 py-1 text-xs font-semibold tracking-wide text-[#7f1414] uppercase">
                                     {program.degree_type}
                                 </span>
                             </div>
 
-                            <h1 className="mb-6 text-center text-4xl font-bold">{program.program_name}</h1>
+                            <h1 className="mb-6 text-left text-4xl font-bold">{program.program_name}</h1>
 
                             {/* Dropdown */}
                             <div className="group/dropdown relative" onMouseLeave={() => setDropdownOpen(false)}>
