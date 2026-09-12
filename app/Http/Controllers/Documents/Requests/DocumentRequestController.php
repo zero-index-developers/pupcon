@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Response;
 
 class DocumentRequestController extends Controller
@@ -59,7 +60,7 @@ class DocumentRequestController extends Controller
             'file.*.file_type' => ['required', 'string'],
         ]);
 
-        $this->updateFileStatus($validated['file'], 'Pending', ActivityLogAction::Approve);
+        $this->updateFileStatus($validated['file'], 'Approved', ActivityLogAction::Approve);
 
         return redirect()->back()
             ->with('type', 'success')
@@ -115,10 +116,12 @@ class DocumentRequestController extends Controller
 
     private function resolveFileModel(string $fileType, int $fileId): AreaFiles|AreaForms|ExhibitFiles|null
     {
+        $normalizedType = Str::lower($fileType);
+
         return match (true) {
-            $fileType === 'exhibits' => ExhibitFiles::findOrFail($fileId),
-            str_contains($fileType, 'area-forms') => AreaForms::findOrFail($fileId),
-            str_contains($fileType, 'area') => AreaFiles::findOrFail($fileId),
+            $normalizedType === 'exhibits' => ExhibitFiles::findOrFail($fileId),
+            Str::contains($normalizedType, 'area-forms') => AreaForms::findOrFail($fileId),
+            Str::contains($normalizedType, 'area') => AreaFiles::findOrFail($fileId),
             default => null,
         };
     }
@@ -149,7 +152,6 @@ class DocumentRequestController extends Controller
             ActivityLogService::fileManagementLog(
                 activity: $activity,
                 description: "{$activity->value} file: {$file->file_name}",
-                // . ($rejectionReason ? ". Reason: {$rejectionReason}" : "")
                 userId: $user->user_id
             );
         }

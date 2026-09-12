@@ -3,6 +3,7 @@
 use App\Http\Middleware\AccreditorPrivileges;
 use App\Http\Middleware\AccreditorRestriction;
 use App\Http\Middleware\Admin as AdminPrivileges;
+use App\Http\Middleware\AdminOrCoordinator;
 use App\Http\Middleware\EnsureAccreditationLevelExists;
 use App\Http\Middleware\EnsureMustUpdatePassword;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -34,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => AdminPrivileges::class,
+            'admin.or.coordinator' => AdminOrCoordinator::class,
             'user.accreditor.restriction' => AccreditorRestriction::class,
             'user.program.role' => UserProgramPrivileges::class,
             'program.level.exists' => EnsureAccreditationLevelExists::class,
