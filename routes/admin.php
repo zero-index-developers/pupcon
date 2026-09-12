@@ -101,13 +101,6 @@ Route::middleware(['auth', 'verified', 'update.password', 'admin'])->group(funct
         });
     });
 
-    Route::controller(DocumentRequestController::class)->prefix('requests')->group(function () {
-        // Route::get('/', 'index')->name('requests');
-        Route::post('/approveDocument', 'approve')->name('approveDocument');
-        Route::post('/rejectDocument', 'reject')->name('rejectDocument');
-        Route::post('/revertDocument', 'revert')->name('revertDocument');
-    });
-
     Route::get('main-content/', ContentController::class)->name('content.main');
     Route::post('main-content/welcome/update', WelcomeController::class)->name('content.welcome.update');
     Route::post('main-content/about/update', AboutController::class)->name('content.about.update');
@@ -117,4 +110,12 @@ Route::middleware(['auth', 'verified', 'update.password', 'admin'])->group(funct
     Route::post('main-content/facilities/update', FacilitiesController::class)->name('content.facilities.update');
     Route::post('main-content/faculty_staff/update', FacultyStaffController::class)->name('content.faculty_staff.update');
     Route::post('main-content/local_task_force/update', LocalTaskForceController::class)->name('content.local_task_force.update');
+});
+
+Route::middleware(['auth', 'verified', 'update.password', 'admin.or.coordinator'])->group(function () {
+    Route::controller(DocumentRequestController::class)->prefix('requests')->group(function () {
+        Route::post('/approveDocument', 'approve')->name('approveDocument');
+        Route::post('/rejectDocument', 'reject')->name('rejectDocument');
+        Route::post('/revertDocument', 'revert')->name('revertDocument');
+    });
 });
